@@ -6,7 +6,7 @@ const {table} = require('table');
 
 nconf.argv().env().file('./config.json');
 
-// initialize varables to store product data retrieved from the database and prompt answers
+// initialize variable to store product data retrieved from the database
 let productData;
 
 // Set up database connection settings

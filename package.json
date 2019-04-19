@@ -1,21 +1,21 @@
 {
-  "name": "blamazon-database-cli",
+  "name": "ahop-database-cli",
   "version": "1.0.0",
   "description": "A command line application that creates a virtual storefront by accessing product databases",
-  "main": "blamazonCustomer.js",
+  "main": "mysqlShopCustomer.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Byrnetp/blamazon-database-cli.git"
+    "url": "git+https://github.com/Byrnetp/shop-database-cli.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Byrnetp/blamazon-database-cli/issues"
+    "url": "https://github.com/Byrnetp/shop-database-cli/issues"
   },
-  "homepage": "https://github.com/Byrnetp/blamazon-database-cli#readme",
+  "homepage": "https://github.com/Byrnetp/shop-database-cli#readme",
   "dependencies": {
     "inquirer": "6.3.1",
     "mysql": "2.16.0",
