@@ -1,5 +1,5 @@
 {
-  "name": "ahop-database-cli",
+  "name": "shop-database-cli",
   "version": "1.0.0",
   "description": "A command line application that creates a virtual storefront by accessing product databases",
   "main": "mysqlShopCustomer.js",

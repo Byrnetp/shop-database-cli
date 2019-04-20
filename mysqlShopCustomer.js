@@ -9,7 +9,7 @@ nconf.argv().env().file('./config.json');
 // initialize variable to store product data retrieved from the database
 let productData;
 
-// Set up database connection settings
+// Set up mysql database connection settings
 const connection = mysql.createConnection({
     host     : nconf.get('mysql:host'),
     user     : nconf.get('mysql:user'),
@@ -76,7 +76,7 @@ const shopFront = new Promise((resolve, reject) => {
 
 // If the purchase was successfully completed, update the database to reflect the new quantity of the purchased item.
 shopFront.then((answers) => {
-    connection.query(`UPDATE products SET stock_quantity = ${productData[answers.itemID - 1].stock_quantity - answers.quantity} WHERE item_id = ${answers.itemID};`, (error, results, fields) => {
+    connection.query(`UPDATE products SET stock_quantity = ${mysql.escape(productData[answers.itemID - 1].stock_quantity - answers.quantity)} WHERE item_id = ${mysql.escape(answers.itemID)};`, (error, results, fields) => {
         if (error) throw error;
         console.log('Updating database...');
     })
