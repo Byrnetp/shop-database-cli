@@ -43,7 +43,7 @@ const shopFront = new Promise((resolve, reject) => {
                     if (input > 0 && input <= productData.length) {
                         return true;
                     }
-                    return 'Please select a valid item ID to purchase';
+                    return 'Please enter a valid item ID';
                 }
             },
             // Next prompt for the quantity to purchase
@@ -55,7 +55,7 @@ const shopFront = new Promise((resolve, reject) => {
                     if (input >= 0) {
                         return true;
                     }
-                    return 'Plese enter a valid quantity to purchase'
+                    return 'Plese enter a valid quantity';
                 },
                 default: 0
             }])
@@ -78,7 +78,7 @@ const shopFront = new Promise((resolve, reject) => {
 shopFront.then((answers) => {
     connection.query(`UPDATE products SET stock_quantity = ${mysql.escape(productData[answers.itemID - 1].stock_quantity - answers.quantity)} WHERE item_id = ${mysql.escape(answers.itemID)};`, (error, results, fields) => {
         if (error) throw error;
-        console.log('Updating database...');
+        console.log('Database unpated.');
     })
     connection.end();
 });
