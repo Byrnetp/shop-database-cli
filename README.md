@@ -1,2 +1,4 @@
 # shop-database-cli
 A command line application that creates a virtual storefront by accessing product databases
+
+This is an excercise in interacting with both SQL and NoSQL databases using Node.js applications. The project connects and interacts with both MySQL and MongoDB databases as instances of these. A virtual storefront is created by the customer applications which can be used to view and purchase items in the shop. The manager applacations then allow the shop owners to view and update their shop's data in a variety of ways. Between all four of the applications, all of the CRUD operations (create, read, update, delete) are utilized for both MySQL and MongoDB.
