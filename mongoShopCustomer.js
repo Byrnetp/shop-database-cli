@@ -25,9 +25,9 @@ const shopFront = new Promise((resolve, reject) => {
         productData = await collection.find({}).toArray();
 
         // Create a table of the most relevant data for the customer to see
-        let dataTable = [['Product Name', 'Price ($)']];
-        for (let item of productData) {
-        dataTable.push([item.product_name, item.price]);
+        let dataTable = [['Item ID', 'Product Name', 'Price ($)']];
+        for (let i = 0; i < productData.length; i++) {
+            dataTable.push([i, productData[i].product_name, productData[i].price]);
         }
         console.log(table(dataTable));
 
@@ -36,15 +36,14 @@ const shopFront = new Promise((resolve, reject) => {
             inquirer
             // First prompt for the item ID of the desired item
             .prompt([{
-                type: 'input',
-                name: 'name',
-                message: 'Enter the name of the product you would like to purchase:',
+                type: 'number',
+                name: 'itemID',
+                message: 'Enter the item ID of the product you would like to purchase:',
                 validate: (input) => {
-                    const validNames = productData.map(doc => doc.product_name);
-                    if (validNames.indexOf(input) != -1) {
+                    if (0 <= input && input < productData.length) {
                         return true;
                     }
-                    return 'Please enter a valid product name';
+                    return 'Please enter a valid Item ID';
                 }
             },
             // Next prompt for the quantity to purchase
@@ -62,18 +61,11 @@ const shopFront = new Promise((resolve, reject) => {
             }])
             // After answers are collected, if there isn't enough in stock cancel the purchase. Otherwise, display price and update purhcase completion status
             .then((answers) => {
-                let selectionIndex;
-                for (let i = 0; i < productData.length; i++) {
-                    if (productData[i].product_name == answers.name) {
-                        selectionIndex = i;
-                        break;
-                    }
-                }
-                updatedQuantity = productData[selectionIndex].stock_quantity - answers.quantity;
+                updatedQuantity = productData[answers.itemID].stock_quantity - answers.quantity;
                 if (updatedQuantity < 0) {
                     console.log('Insufficient quantity in stock, Sorry!')
                 } else {
-                    console.log(`Price of purchase: $${productData[selectionIndex].price * answers.quantity}`);
+                    console.log(`Price of purchase: $${productData[answers.itemID].price * answers.quantity}`);
                 }
                 resolve(answers);
             }).catch((error) => {
@@ -90,10 +82,10 @@ const shopFront = new Promise((resolve, reject) => {
 shopFront.then((answers) => {
 
     const client2 = new MongoClient(uri, { useNewUrlParser: true });
-    client2.connect(err => {
+    client2.connect(async (err) => {
         if (err) throw err;
         const collection = client2.db(nconf.get("mongodb:database")).collection("products");
-        collection.updateOne({product_name: `${answers.name}`}, {$set: {stock_quantity: updatedQuantity}}, () => {
+        await collection.updateOne({_id: productData[answers.itemID]._id}, {$set: {stock_quantity: updatedQuantity}}, () => {
             console.log('Database updated.');
         });
         client2.close();
